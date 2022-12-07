@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LiveQA</title>
+    <meta name='viewport' content='width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no'>
+    <meta charset='utf-8'>
+    <link rel="stylesheet" href="assets/fonts/open-sans/open-sans.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <script type="text/javascript" src="assets/js/main.js"></script>
+  </head>
+  <body>
+
+    <!-- Temporary Site Checkboxes -->
+    <input type="radio" class="pseudo" name="siteradio" id="site_main" checked>
+    <input type="radio" class="pseudo" name="siteradio" id="site_frage_stellen">
+    <input type="radio" class="pseudo" name="siteradio" id="site_nutzereinstellungen">
+    <input type="radio" class="pseudo" name="siteradio" id="site_nutzerinformationen">
+    <input type="radio" class="pseudo" name="siteradio" id="site_einstellungen">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="title">
+	<div class="host" id="data_text_host"></div>
+	<div class="headline" id="data_text_headline"></div>
+      </div>
+      <div class="user _interaction">
+	<label for="site_nutzerinformationen" class="userinfo">
+	  <div class="level" id="data_level"></div>
+	  <div class="os" id="data_os"></div>
+	</label>
+	<label for="site_nutzereinstellungen" class="username">
+	  <div class="nickname" id="data_username"></div>
+	  <div class="status" id="data_mod">User</div>
+	</label>
+      </div>
+    </div>
+    
+    <!-- BODY -->    
+    <div class="body site_main">	
+      <div class="fragen" id="fragen">
+
+	<div class="titlecontainer">
+	  <div class="title">Fragen</div>
+	  <label for="site_frage_stellen" class="button important _not_mod _interaction">Frage stellen</label>
+	  <label for="site_einstellungen" class="button important _mod _interaction">Einstellungen</label>
+	</div>
+
+	<input type="checkbox" class="pseudo" id="togglefrage_42">
+      	<label class="frage aktuell" id="frage_42" for="togglefrage_42">
+	  <div class="topbar" id="frage_42_topbar">
+	    <div class="user" id="frage_42_topbar_username">Anonymous</div>
+	    <div class="tag" id="frage_42_topbar_level">Normaler Nutzer</div>
+	    <div class="tag" id="frage_42_topbar_os">Linux</div>
+	    <div class="tag important" id="frage_42_topbar_forum">Frage fürs Forum</div>
+	    <div class="space"></div>
+	    <div class="interessant" id="frage_42_topbar_interessant">Interessant (12)</div>
+	  </div>
+	  <div class="inhalt" id="frage_42_inhalt">Wann kommt das nächste Q&A?</div>
+
+	  <table class="kommentare" id="frage_42_kommentare">
+	    <tr>
+	      <td>Schaukelstuhl</td>
+	      <td>Ich würde nur Distros verwenden, hinter denen eine Community steht</td>
+	    </tr>
+	    <tr>
+	      <td>Bärmetall</td>
+	      <td>Bin stolzer Benutzer seit 5 einhalb Jahren!</td>
+	    </tr>
+	    <tr class="write _interaction">
+	      <td id="frage_42_kommentare_username">Schaukelstuhl</td>
+	      <td><input type="text" placeholder="Dein Kommentar..."></td>
+	    </tr>
+	  </table>	  
+	</label>
+	
+	
+      </div>
+    </div>
+
+    <!-- TEMPORARY SITES -->
+    <div class="body site_frage_stellen">
+      <div>
+	<div class="titlecontainer">
+	  <div class="title">Frage stellen</div>
+	  <label for="site_main" class="button">Hauptseite</label>
+	</div>
+
+	<div class="inputbar secondary firstfocus">
+	  <div>
+	    <div>Nutzername:</div>
+	    <input type="text" placeholder="Nutzername" id="frage_stellen_set_user_name" value="">
+	  </div>
+	  <div>
+	    <div>Erfahrung:</div>
+	    <select id="frage_stellen_set_user_level">
+	      <option value="0" id="frage_stellen_set_user_level_option_0">Anfänger</option>
+	      <option value="1" id="frage_stellen_set_user_level_option_1">Normaler Nutzer</option>
+	      <option value="2" id="frage_stellen_set_user_level_option_2">Fortgeschrittener</option>
+	      <option value="3" id="frage_stellen_set_user_level_option_3">Profi</option>
+	    </select>
+	  </div>
+	  <div>
+	    <div>Betriebsystem:</div>
+	    <input type="text" placeholder="z.B. Linux Mint 21" id="frage_stellen_set_user_os">
+	  </div>
+	</div>
+	
+	<div>
+	  <div class="inputtitle">Deine Frage:</div>
+	  <input type="text" id="frage_stellen_new_frage">
+	</div>
+	
+	<div><div class="button important" onclick="api_request(['frage_stellen_set_user_name', 'frage_stellen_set_user_level', 'frage_stellen_set_user_os', 'frage_stellen_new_frage']);">Frage stellen</div></div>
+      </div>
+    </div>
+    
+    <div class="body site_nutzereinstellungen">
+      <div>
+	<div class="titlecontainer">
+	  <div class="title">Nutzer</div>
+	  <label for="site_main" class="button">Hauptseite</label>
+	</div>
+	
+	<div>
+	  <div class="inputtitle">Dein Nutzername:</div>
+	  <input type="text" value="" id="nutzereinstellungen_set_user_name">
+	</div>
+	
+	<div><div class="button important" onclick="api_request(['nutzereinstellungen_set_user_name']);">ändern</div></div>
+
+	<div class="new_section"></div>
+	
+	<div class="p">Diese Seite verzichtet bewusst auf registrierte Nutzerkonten. Falls du dich jedoch mit diesem Nutzer auf einem anderen Gerät anmelden möchtest, nutze die folgende Nutzer ID.</div>
+
+	<div class="inputbar firstfocus">
+	  <div>
+	    <div class="inputtitle">Deine Nutzer ID:</div>
+	    <input type="text" value="" class="copy hidden" id="data_session" disabled>
+	  </div>
+	  <div class="minwidth">
+	    <div>Status:</div>
+	    <select disabled>
+	      <option value="0" id="data_mod_0">User</option>
+	      <option value="1" id="data_mod_1">Moderator</option>
+	    </select>
+	  </div>
+	</div>
+
+	<div class="new_section"></div>
+
+	<div class="p">Falls du dich auf diesem Gerät mit einem anderen Nutzer anmelden möchtest, trage unten die entsprechende Nutzer ID ein.</div>
+	<div>
+	  <div class="inputtitle">Neue Nutzer ID:</div>
+	  <input type="text" id="nutzereinstellungen_set_user_session" value="">
+	</div>
+	
+	<div><div class="button" onclick="api_request(['nutzereinstellungen_set_user_session']);">anmelden</div></div>
+
+      </div>
+    </div>
+
+    <div class="body site_nutzerinformationen">
+      <div>
+	<div class="titlecontainer">
+	  <div class="title">Deine Informationen</div>
+	  <label for="site_main" class="button">Hauptseite</label>
+	</div>
+	
+	<div class="inputbar">
+	  <div>
+	    <div>Erfahrung:</div>
+	    <select id="nutzerinformationen_set_user_level">
+	      <option value="0" id="nutzerinformationen_set_user_level_option_0">Anfänger</option>
+	      <option value="1" id="nutzerinformationen_set_user_level_option_1">Normaler Nutzer</option>
+	      <option value="2" id="nutzerinformationen_set_user_level_option_2">Fortgeschrittener</option>
+	      <option value="3" id="nutzerinformationen_set_user_level_option_3">Profi</option>
+	    </select>
+	  </div>
+	  <div>
+	    <div>Betriebsystem:</div>
+	    <input type="text" placeholder="z.B. Linux Mint 21" id="nutzerinformationen_set_user_os">
+	  </div>
+	</div>
+
+	<div class="p">Die Angaben sind optional, können aber in manchen Situationen hilfreich sein.</div>
+	
+	<div><div class="button important" onclick="api_request(['nutzerinformationen_set_user_level', 'nutzerinformationen_set_user_os']);">ändern</div></div>
+      </div>
+    </div>
+
+    <div class="body site_einstellungen _mod">
+      <div>
+	<div class="titlecontainer">
+	  <div class="title">Einstellungen</div>
+	  <label for="site_main" class="button">Hauptseite</label>
+	</div>
+	
+	<div class="inputbar">
+	  <div>
+	    <div class="inputtitle">Aktives Projekt:</div>
+	    <select id="einstellungen_set_active_project">
+	    </select>
+	  </div>
+	  <div>
+	    <div class="inputtitle">Neues Projekt:</div>
+	    <input type="text" placeholder="Name" id="einstellungen_new_project">
+	  </div>
+	</div>
+
+	<div class="p">Neue Projekte werden sofort auf aktiv gestellt.</div>
+	
+	<div><div class="button important" onclick="api_request(['einstellungen_new_project', 'einstellungen_set_active_project']);">speichern</div></div>
+
+      </div>
+    </div>
+    
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>Powered by <a href="https://jcobs.de" target="_blank">J'cobs Softwareentwicklung</a></div>
+    </div>
+    
+  </body>
+</html>

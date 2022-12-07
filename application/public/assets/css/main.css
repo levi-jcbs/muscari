@@ -1,0 +1,400 @@
+@media (prefers-color-scheme: light) {
+    :root {
+	--var-color-final-accent: var(--var-color-light-accent);
+	--var-color-final-accent-text: var(--var-color-light-accent-text);
+	--var-color-final-background: var(--var-color-light-background);
+	--var-color-final-background-text: var(--var-color-light-background-text);
+	--var-color-final-focus-1: var(--var-color-light-focus-1);
+	--var-color-final-focus-2: var(--var-color-light-focus-2);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--var-color-final-accent: var(--var-color-dark-accent);
+	--var-color-final-accent-text: var(--var-color-dark-accent-text);
+	--var-color-final-background: var(--var-color-dark-background);
+	--var-color-final-background-text: var(--var-color-dark-background-text);
+	--var-color-final-focus-1: var(--var-color-dark-focus-1);
+	--var-color-final-focus-2: var(--var-color-dark-focus-2);
+    }
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    user-select: none;
+    font-family: var(--var-font-family);
+    font-size: var(--var-font-size-medium);
+    font-weight: var(--var-font-weight-medium);
+    background-color: var(--var-color-final-background);
+    color: var(--var-color-final-background-text);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* LITTLE */
+
+.little, .status, .os, .interessant, .topbar *, .kommentare tr td:first-child {
+    font-size: var(--var-font-size-little);
+    font-weight: var(--var-font-weight-light);
+}
+
+/* USER-SELECT */
+
+.user-select {
+    user-select: text;
+}
+
+/* GENERAL */
+
+.new_section {
+    margin-bottom: 40px !important;
+}
+
+.pseudo {
+    display: none;
+}
+
+.space {
+    flex-grow: 1;
+}
+
+.minwidth {
+    flex-grow: 0 !important;
+}
+
+.copy {
+    cursor: text;
+}
+
+.hidden {
+    transition: filter 200ms;
+}
+
+.hidden:not(:hover) {
+    filter: blur(5px);
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px 50px;
+    padding: 20px 25px;
+    background-color: var(--var-color-final-focus-1);
+    color: var(--var-color-final-background-text);
+}
+
+.header .title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 10px 20px;
+    font-size: var(--var-font-size-large);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.header .title .host {
+    position: relative;
+    background-color: var(--var-color-final-accent);
+    color: var(--var-color-final-accent-text);
+    padding: 7px 15px;
+    border-radius: 5px;
+}
+
+.header .title .headline {
+    padding: 7px 0px;
+}
+
+.header .user {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 50px;
+}
+
+.header .user .username {
+    text-align: right;
+}
+
+.header .user > * {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 7px 15px;
+    transition: background-color 200ms;
+}
+
+.header .user > *:hover{
+    background-color: var(--var-color-final-focus-1);
+}
+
+/* SEITENMECHANISMUS */
+
+.body {
+    display: none;
+}
+
+#site_main:checked ~ .body.site_main {
+    display: block;
+}
+
+#site_frage_stellen:checked ~ .body.site_frage_stellen {
+    display: block;
+}
+
+#site_nutzereinstellungen:checked ~ .body.site_nutzereinstellungen {
+    display: block;
+}
+
+#site_nutzerinformationen:checked ~ .body.site_nutzerinformationen {
+    display: block;
+}
+
+#site_einstellungen:checked ~ .body.site_einstellungen {
+    display: block;
+}
+
+/* BODY */
+
+.body {
+    margin: 50px auto 20px auto;
+    width: 900px;
+    max-width: calc(100% - 50px);
+}
+
+.body > * > * {
+    margin: 20px 0px;
+}
+
+.body .p {
+    font-weight: var(--var-font-weight-light);
+}
+
+.body .titlecontainer {
+    display: flex;
+    align-items: center;
+}
+
+.body .titlecontainer .title {
+    font-size: var(--var-font-size-large);
+    flex-grow: 1;
+}
+
+.body .button {
+    display: inline-block;
+    font-size: var(--var-font-size-large);
+    background-color: var(--var-color-final-focus-1);
+    color: var(--var-color-final-background-text);
+    padding: 7px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.body .button:not(.important):hover {
+    background-color: var(--var-color-final-focus-2);
+}
+
+.body .button.important {
+    background-color: var(--var-color-final-accent);
+    color: var(--var-color-final-accent-text);
+}
+
+.body .frage {
+    display: block;
+    background-color: var(--var-color-final-focus-1);
+    transition: background-color 200ms;
+    padding: 15px 30px;
+    border-radius: 5px;
+}
+
+.body .frage:hover:not(.aktuell) {
+    background-color: var(--var-color-final-focus-2);
+    cursor: pointer;
+}
+
+.body .frage.aktuell {
+    border-left: var(--var-color-final-accent) solid 5px;
+    padding-left: 25px;
+}
+
+.body .frage .topbar {
+    display: flex;
+    align-items: first baseline;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.body .frage .topbar .user {
+    margin-right: 15px;
+    font-weight: var(--var-font-weight-normal);
+}
+
+.body .frage .topbar .tag {
+    background-color: var(--var-color-final-background);
+    margin-right: 10px;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.body .frage .topbar .tag.important {
+    background-color: var(--var-color-final-accent);
+    color: var(--var-color-final-accent-text);    
+}
+
+.body .frage .topbar .interessant {
+    cursor: pointer;
+}
+
+/* Kommentare */
+
+.body .frage:not(.aktuell) .kommentare {
+    display: none;
+}
+
+.body input[type=checkbox]:checked + label.frage:not(.aktuell) .kommentare {
+    display: block;
+}
+
+.body .frage .kommentare {
+    width: calc(100% - 50px);
+    margin: 25px 0px 0px 50px;
+    font-size: var(--var-font-size-smaller);
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.body .frage .kommentare tr td {
+    vertical-align: middle;
+    padding: 0px;
+}
+
+/* Zellabstand und Namensspalte auf minimale Breite */
+.body .frage .kommentare tr td:first-child {
+    padding: 5px 20px 5px 0px;
+    width: 0px;
+    text-align: right;
+}
+
+.body .frage .kommentare tr:not(.write) td:last-child {
+    padding: 5px 0px 5px 10px;
+}
+
+.body .frage .kommentare tr.write td {
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+.body .frage .kommentare input[type=text] {
+    font-size: var(--var-font-size-smaller);
+    padding: 5px 10px;
+    background-color: var(--var-color-final-background);
+    color: var(--var-color-final-background-text);
+}
+
+input[type=text], select {
+    min-width: 200px;
+    width: 100%;
+    border: 0px;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 7px 15px;
+    background-color: var(--var-color-final-focus-1);
+    color: var(--var-color-final-background-text);
+    font-family: var(--var-font-family); 
+    font-weight: var(--var-font-weight-medium);
+    font-size: var(--var-font-size-medium);
+}
+
+select {
+    cursor: pointer;
+}
+
+input[type=text]:disabled:not(.copy), select:disabled {
+    cursor: default;
+}
+
+.body .section {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* FRAGE STELLEN */
+
+.body .inputbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+}
+
+.body .inputbar div {
+    flex-grow: 1;
+}
+
+.body .inputtitle, .body .inputbar div div:first-child {
+    margin-bottom: 10px;
+    font-size: var(--var-font-size-smaller);
+    font-weight: var(--var-font-weight-medium);    
+}
+
+/* .inputbar.secondary für Input Bars, die nicht im Fokus stehen sollen. .inputbar.firstfocus Ist für Inputbars, wo der erste Input im Fokus stehen soll */
+.body .inputbar.secondary div input, .body .inputbar.secondary div select, .body .inputbar.secondary div div:first-child {
+    font-weight: var(--var-font-weight-light);
+    font-size: var(--var-font-size-smaller);
+}
+
+.body .inputbar.firstfocus div div:first-child, .body .inputbar.firstfocus div input, .body .inputbar.firstfocus div select {
+    font-weight: var(--var-font-weight-light);
+}
+
+.body .inputbar.firstfocus div:first-child div:first-child, .body .inputbar.firstfocus div:first-child input, .body .inputbar.firstfocus div:first-child select {
+    font-weight: var(--var-font-weight-medium);
+}
+
+/* FOOTER */
+
+.footer {
+    display: block;
+    text-align: right;
+    font-weight: var(--var-font-weight-light);
+    margin: 0 auto;
+    width: 900px;
+    max-width: calc(100% - 50px);
+    padding-bottom: 20px;
+}
+
+.footer a {
+    text-decoration: none;
+    color: var(--var-color-final-background-text);
+    font-weight: var(--var-font-weight-medium);
+}
+
+/* DESKTOP != SMARTPHONE */
+@media (min-width: 950px) {
+    .body .frage .kommentare {
+	width: calc(100% - 50px);
+	margin: 25px 0px 0px 50px;
+    }
+}
+
+@media (max-width: 949px) {
+    .body .frage .kommentare {
+	width: 100%;
+	margin: 25px 0px 0px 0px;
+    }
+
+    .body .topbar .tag {
+	display: none;
+    }
+}
