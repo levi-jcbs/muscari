@@ -87,6 +87,8 @@ $ systemctl --user enable --now ./pod-muscari.service
 
 ### Docker
 
+Jean, your turn. :wink:
+
 ### Manually
 
 To deploy Muscari manually, you need to fulfill the following requirements:
