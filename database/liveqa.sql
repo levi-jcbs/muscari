@@ -4,6 +4,8 @@ CREATE DATABASE `liveqa`;
 
 GRANT ALL PRIVILEGES ON `liveqa`.* TO `liveqa`@`%`;
 
+FLUSH PRIVILEGES;
+
 USE `liveqa`;
 
 CREATE TABLE `projects` (
