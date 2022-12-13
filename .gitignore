@@ -1,2 +1,4 @@
-/mysql/
-/config/config.json
+/application/config/config.json
+/podman/systemd/*
+
+!.gitkeep
