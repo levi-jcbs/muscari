@@ -94,8 +94,6 @@ $ chmod 770 -R application/*
 $ podman unshare chgrp 33 -R application/*
 ```
 
-> *The better way* to solve this permission problem, is to map the host user to www-data in the container. I *(levi-jcbs)* couldn't properly map the namespace so Muscari starts. If someone has the experience to do it, please contribute, and tell us how!
-
 ### Docker
 
 Jean, your turn. :wink:
