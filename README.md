@@ -45,7 +45,7 @@ If you're lazy, just run `bash podman/deploy.sh create|start|autostart productio
 
 Create pod, publish port **22125**:
 ```bash
-$ podman pod create --replace --userns= --publish 22125:80 muscari
+$ podman pod create --replace --publish 22125:80 muscari
 ```
 
 Assign database to pod:
@@ -84,6 +84,17 @@ Enable and start systemd units:
 ```bash
 $ systemctl --user enable --now ./pod-muscari.service
 ```
+
+#### Permissions in dev environments
+
+When working in a development environment, it's necessary to have **rw** permisssions to the application both on the host side and the container side. This can be gained by changing the group owner to the container's **www-data**.
+
+```bash
+$ chmod 770 -R application/*
+$ podman unshare chgrp 33 -R application/*
+```
+
+> *The better way* to solve this permission problem, is to map the host user to www-data in the container. I *(levi-jcbs)* couldn't properly map the namespace so Muscari starts. If someone has the experience to do it, please contribute, and tell us how!
 
 ### Docker
 
