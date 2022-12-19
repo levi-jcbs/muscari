@@ -105,7 +105,7 @@ Jean, your turn. :wink:
 To deploy Muscari manually, you need to fulfill the following requirements:
 
 1. The machine is running running Linux (to ensure data safety 😉)
-2. Webserver using `/application/` Directory of this project as its public dir
+2. Webserver using `/application/public/` Directory of this project as its public dir
 3. Webserver able to run **PHP8** with sockets, mysqli, pdo and pdo_mysql
 4. MySQL Database (recommended MariaDB) with dump (`/database/muscari-mariadb.sql`) applied.
    - User: **muscari**

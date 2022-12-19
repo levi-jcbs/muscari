@@ -1,5 +1,5 @@
 FROM mariadb:latest
 
-ENV MARIADB_ROOT_PASSWORD = liveqa
+ENV MARIADB_ROOT_PASSWORD = muscari
 
-ADD /database/liveqa.sql /docker-entrypoint-initdb.d/
+ADD /database/muscari-mariadb.sql /docker-entrypoint-initdb.d/
