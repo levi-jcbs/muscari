@@ -20,6 +20,8 @@ else
     port=22125
 fi
 
+echo_and_run "systemctl --user disable --now pod-muscari.service"
+
 echo_and_run "podman pod create --replace --publish $port:80 muscari"
 
 echo_and_run "podman create --replace --pod muscari --volume muscari-mysql:/var/lib/mysql/:Z --name muscari-database muscari-database:latest"

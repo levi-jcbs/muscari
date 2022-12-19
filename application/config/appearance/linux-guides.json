@@ -1,0 +1,28 @@
+{
+  "css": [
+    [ "--var-font-weight-light", "300" ],
+    [ "--var-font-weight-medium", "400" ],
+    [ "--var-font-weight-bold", "600" ],
+    
+    [ "--var-font-size-little", "14px" ],
+    [ "--var-font-size-smaller", "16px" ],
+    [ "--var-font-size-medium", "18px" ],
+    [ "--var-font-size-large", "22px" ],
+    
+    [ "--var-font-family", "Open Sans" ],
+    
+    [ "--var-color-light-accent", "#67ad16" ],
+    [ "--var-color-light-accent-text", "#ffffff" ],
+    [ "--var-color-light-background", "#ffffff" ],
+    [ "--var-color-light-background-text", "#000000" ],      
+    [ "--var-color-light-focus-1", "rgba(0%, 0%, 0%, 0.1)" ],
+    [ "--var-color-light-focus-2", "rgba(0%, 0%, 0%, 0.2)" ],
+    
+    [ "--var-color-dark-accent", "#67ad16" ],
+    [ "--var-color-dark-accent-text", "#ffffff" ],
+    [ "--var-color-dark-background", "#212121" ],
+    [ "--var-color-dark-background-text", "#ffffff" ],      
+    [ "--var-color-dark-focus-1", "rgba(100%, 100%, 100%, 0.1)" ],
+    [ "--var-color-dark-focus-2", "rgba(100%, 100%, 100%, 0.2)" ]
+  ]
+}

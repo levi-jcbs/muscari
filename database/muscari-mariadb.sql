@@ -1,13 +1,3 @@
-CREATE USER `liveqa`@`%` IDENTIFIED BY 'liveqa';
-
-CREATE DATABASE `liveqa`;
-
-GRANT ALL PRIVILEGES ON `liveqa`.* TO `liveqa`@`%`;
-
-FLUSH PRIVILEGES;
-
-USE `liveqa`;
-
 CREATE TABLE `projects` (
   `id`        int           PRIMARY KEY auto_increment,   /*                                                           */
   `name`      varchar(30)                             ,   /*                                                           */
