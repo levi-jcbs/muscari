@@ -9,7 +9,13 @@ function echo_and_run(){
 number_regex='^[0-9]+$'
 pwd=$( pwd )
 
-if !(( [ "$1" == "start" ] || [ "$1" == "autostart" ] || [ "$1" == "create" ] ) && ( [ "$2" == "dev" ] || [ "$2" == "production" ] ) && ( [ "$3" == "" ] || [[ "$3" =~ $number_regex ]] ) && [ -d ".git/" ] ); then
+if !(
+	( [ "$1" == "start" ] || [ "$1" == "autostart" ] || [ "$1" == "create" ] )
+     && ( [ "$2" == "dev" ] || [ "$2" == "production" ] )
+     && ( [ "$3" == "" ] || [[ "$3" =~ $number_regex ]] )
+     && [ -d ".projectroot_muscari" ]
+    ); then
+    
     echo "    Usage: bash podman/deploy.sh create|start|autostart production|dev [port]"
     exit;
 fi
@@ -25,7 +31,7 @@ echo_and_run "podman pod create --replace --publish $port:80 muscari"
 echo_and_run "podman create --replace --pod muscari --volume muscari-mysql:/var/lib/mysql/:Z --name muscari-database muscari-database:latest"
 
 if [ "$2" == "dev" ]; then
-    echo_and_run "podman create --replace --pod muscari --volume $pwd/application/:/var/www/liveqa/:Z --volume $pwd/webserver/apache2-config/sites-available/:/etc/apache2/sites-available/:Z --name muscari-webserver muscari-webserver:latest"
+    echo_and_run "podman create --replace --pod muscari --volume $pwd/application/:/var/www/muscari/:Z --volume $pwd/webserver/apache2-config/sites-available/:/etc/apache2/sites-available/:Z --name muscari-webserver muscari-webserver:latest"
 else
     echo_and_run "podman create --replace --pod muscari --name muscari-webserver muscari-webserver:latest"
 fi
