@@ -9,13 +9,7 @@ function echo_and_run(){
 number_regex='^[0-9]+$'
 pwd=$( pwd )
 
-if !(
-	( [ "$1" == "start" ] || [ "$1" == "autostart" ] || [ "$1" == "create" ] )
-     && ( [ "$2" == "dev" ] || [ "$2" == "production" ] )
-     && ( [ "$3" == "" ] || [[ "$3" =~ $number_regex ]] )
-     && [ -d ".projectroot_muscari" ]
-    ); then
-    
+if !(( [ "$1" == "start" ] || [ "$1" == "autostart" ] || [ "$1" == "create" ] ) && ( [ "$2" == "dev" ] || [ "$2" == "production" ] ) && ( [ "$3" == "" ] || [[ "$3" =~ $number_regex ]] ) && [ -f ".projectroot_muscari" ] ); then
     echo "    Usage: bash podman/deploy.sh create|start|autostart production|dev [port]"
     exit;
 fi
