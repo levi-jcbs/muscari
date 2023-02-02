@@ -79,10 +79,10 @@ Generating systemd units from pod:
 $ podman generate systemd --files --new --name muscari
 ```
 
-Link to systemd, enable and start pod:
+Copy to systemd, enable and start pod:
 
 ```bash
-$ ln -s * /.config/systemd/user/
+$ cp *.service ~/.config/systemd/user/
 $ systemctl --user daemon-reload
 $ systemctl --user enable --now pod-muscari.service
 ```
