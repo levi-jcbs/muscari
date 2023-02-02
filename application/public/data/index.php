@@ -1,3 +1,11 @@
 <?php
-echo 1;
+
+/*
+ * DATA EVENT STREAM
+ */
+
+include("../../lib/libmuscari.php");
+include("../../lib/libdata.php");
+
+
 ?>
