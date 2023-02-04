@@ -6,3 +6,4 @@ RUN mkdir /var/www/muscari/
 
 COPY /application/ /var/www/muscari/
 COPY /webserver/apache2-config/ /etc/apache2/
+RUN chown -R www-data:www-data /var/www/muscari/

@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  mysql:
+    build: 
+      context: ./sql
+    restart: unless-stopped
+    volumes:
+      - liveqa-mysql-data:/var/lib/mysql
+  php:
+    build: 
+      context: ./
+    restart: unless-stopped
+    ports:
+      - 22125:80
+    depends_on:
+      - mysql
+
+
+volumes:
+  liveqa-mysql-data:
