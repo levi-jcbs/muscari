@@ -134,10 +134,19 @@ function receive_content_event(event){
     
     data.forEach(function(chunk){
 	if(chunk["type"] == "frage"){
-	    if(exists(chunk["id"]) && Number.isInteger(chunk["id"]) && !document.getElementById("frage_"+chunk["id"])){
+	    chunk["id"]=parseInt(chunk["id"]);
+	    if(exists(chunk["id"]) && !Number.isNaN(chunk["id"]) && !document.getElementById("frage_"+chunk["id"])){
 		let frage_html = `
 <input type="checkbox" class="pseudo" id="togglefrage_${chunk["id"]}">
 <label class="frage" id="frage_${chunk["id"]}" for="togglefrage_${chunk["id"]}">
+  <div class="topbar" id="frage_${chunk["id"]}_topbar">
+    <div class="user" id="frage_${chunk["id"]}_topbar_username">${chunk["username"]}</div>
+    <div class="tag" id="frage_${chunk["id"]}_topbar_level">${level2string(chunk["level"])}</div>
+    <div class="tag" id="frage_${chunk["id"]}_topbar_os">${chunk["os"]}</div>
+    <div class="space"></div>
+    <div class="interessant" id="frage_${chunk["id"]}_topbar_interessant" class="_mod">löschen</div>
+  </div>
+  <div class="inhalt" id="frage_${chunk["id"]}_inhalt">${chunk["inhalt"]}</div>
 </label>
 `;
 		document.getElementById("fragen").innerHTML+=frage_html;
@@ -167,18 +176,19 @@ function check_cookie_policy(){
 }
 
 function api_request(component){
+    if(component.includes("einstellungen_set_active_project")){
+	let project_name = document.getElementById("einstellungen_new_project").value;
+	let project_id = document.getElementById("einstellungen_set_active_project").value;
+	if(project_id != "" && project_name == ""){
+	    fetch( '/api/?group=sys&action=set&type=project&property=active&id='+encodeURIComponent(project_id) );
+	}
+    }
+
     if(component.includes("einstellungen_new_project")){
 	let project_name = document.getElementById("einstellungen_new_project").value;
 	if(project_name != ""){
 	    fetch( '/api/?group=sys&action=new&type=project&content='+encodeURIComponent(project_name) );
 	    document.getElementById("einstellungen_new_project").value="";
-	}
-    }
-
-    if(component.includes("einstellungen_set_active_project")){
-	let project_id = document.getElementById("einstellungen_set_active_project").value;
-	if(project_id != ""){
-	    fetch( '/api/?group=sys&action=set&type=project&property=active&id='+encodeURIComponent(project_id) );
 	}
     }
 
@@ -222,8 +232,10 @@ function api_request(component){
     }
 
     if(component.includes("frage_stellen_new_frage")){
-	var frage = document.getElementById("frage_stellen_new_frage").value;
-	fetch( '/api/?group=sys&action=new&type=frage&content='+encodeURIComponent(frage) );
+	var frage = document.getElementById("frage_stellen_new_frage");
+	fetch( '/api/?group=content&action=new&type=frage&content='+encodeURIComponent(frage.value) );
+	frage.value="";
+	document.getElementById("area_frage").innerHTML+=`Vielen Dank, dass du eine Frage gestellt hast! Sie erscheint nun auf der Hauptseite.`;
     }
 }
 
@@ -233,4 +245,20 @@ function removeLastWordIf(check, string) {
     }else{
 	return string;
     }
+}
+
+function level2string(level){
+    if(level == 0){
+	var string="Anfänger";
+    }
+    if(level == 1){
+	var string="Normaler Nutzer";
+    }
+    if(level == 2){
+	var string="Fortgeschrittener";
+    }
+    if(level == 3){
+	var string="Profi";
+    }
+   return string;
 }

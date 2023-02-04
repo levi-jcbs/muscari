@@ -25,6 +25,7 @@ class Muscari {
     static function setPHPOptions(){
         error_reporting(E_ALL);
         ini_set('display_errors', '0');
+        ini_set('log_errors', '1');
         
         session_set_cookie_params(["SameSite" => "Strict"]);
         session_set_cookie_params(["Secure" => "true"]);
@@ -106,6 +107,13 @@ class Database {
         return Database::$connection->query($query);
     }
 
+    static function getFirstValue($query){
+        $result = Database::query($query);
+        $row = $result->fetch_row();
+
+        return $row[0];
+    }
+    
     static function escape($string){
         return Database::$connection->real_escape_string($string);
     }
@@ -258,7 +266,7 @@ class MuscariSocket {
             $user_specification="WHERE 0=1";
             foreach(Config::$application["mods"] AS $mod_sessionid){
                 $result = Database::query("SELECT id FROM user WHERE session='".Database::escape($mod_sessionid)."';");
-                while ($row = $result->fetch_assoc) {
+                while ($row = $result->fetch_assoc()) {
                     $mod_userid=$row["id"];
                     $user_specification.=" OR user='".Database::escape($mod_userid)."'";
                 }
@@ -275,16 +283,8 @@ class MuscariSocket {
             $SOCKET = socket_create(AF_UNIX, SOCK_STREAM, 0);
             if(socket_connect($SOCKET, __DIR__."/../sockets/".$socket_id.".sock")){
                 $message = json_encode($event)."\n";
-                $length = strlen($message);
-
-                while (true) {
-                    $sent = socket_write($SOCKET, $message, $length);
-                    if ($sent === false) { break; }
-                    if ($sent < $length) {
-                        $message = substr($message, $sent);
-                        $length -= $sent;
-                    }else{ break; }
-                }
+                
+                socket_full_write($SOCKET, $message);
             }else{
                 MuscariSocket::forgetDeadSocket($socket_id);
             }
@@ -300,13 +300,42 @@ class MuscariSocket {
 }
 
 class MuscariEvent {
-    static function genSysChunk($type){
+    # Function generate sys chunk
+    static function genSysChunk($type, $id = null){
         $chunk["type"]="$type";
         switch($type){
         case "text":
             $chunk=array_merge($chunk, Config::$application["text"]);
             break;
 
+        case "project":
+            if(!is_numeric($id)){ return false; }
+            $exists = false;
+            $result = Database::query("SELECT id, name, active FROM projects WHERE id='". Database::escape($id) ."';");
+            while($row = $result->fetch_assoc()){
+                $exists = true;
+                $chunk["id"]=$row["id"];
+                $chunk["name"]=$row["name"];
+                $chunk["active"]=$row["active"];
+            }
+            if(!$exists){
+                $chunk["id"] = $id;
+                $chunk["remove"] = 1;
+            }
+            break;
+
+        case "user":
+            if(User::$available){                                  
+                $chunk["name"] = User::$name;          
+                $chunk["sessionid"] = User::$sessionid;
+                $chunk["level"] = User::$level;        
+                $chunk["os"] = User::$os;              
+                $chunk["mod"] = User::$mod;            
+            }else{                                                 
+                $chunk["unset"] = "1";                 
+            }
+            break;
+            
         default:
             return false;
             break;
@@ -314,6 +343,85 @@ class MuscariEvent {
 
         return $chunk;
     }
+
+    # Function for generating content chunks
+    static function genContentChunk($type, $id = null){
+        $chunk["type"]="$type";
+        switch($type){
+        case "frage":
+            if(!is_numeric($id)){ return false; }
+            $exists = false;
+            $result = Database::query("SELECT fragen.id, user.name, user.level, user.os, fragen.forum, fragen.status, fragen.inhalt FROM fragen, user WHERE fragen.user=user.id and fragen.id='".Database::escape( $id )."';");
+            while($row = $result->fetch_assoc()){
+                $exists = true;
+                $chunk["id"] = $row["id"];
+                $chunk["username"] = $row["name"];
+                $chunk["level"] = $row["level"];
+                $chunk["os"] = $row["os"];
+                $chunk["forum"] = $row["forum"];
+                $chunk["inhalt"] = $row["inhalt"];
+                $chunk["status"] = $row["status"];
+            }
+            if(!$exists){
+                $chunk["id"] = $id;
+                $chunk["remove"] = 1;
+            }
+            break;
+
+        default:
+            return false;
+            break;
+        }
+        
+        return $chunk;
+    }
+
+    # Get complete content event                                                         
+    static function getCompleteContentEvent(){                                           
+        $e = array();                                                                
+        $e["event"] = "content";                                                         
+
+        # chunk: frage
+        $result = Database::query("SELECT id FROM fragen ORDER BY id;");                   
+        while ( $row = $result->fetch_assoc() ){                                 
+            $e["data"][] = MuscariEvent::genContentChunk("frage", $row["id"]);     
+        }                                                                        
+
+        return $e;
+    }
+    
+    # Get complete sys event                                                         
+    static function getCompleteSysEvent(){                                           
+        $e = array();                                                                
+        $e["event"] = "sys";                                                         
+                                                                                 
+        # chunk: text                                                                
+        $e["data"][]=MuscariEvent::genSysChunk("text");                              
+                                                                                 
+        # chunk: css, not supported from "MuscariEvent::genSysChunk()" yet, because. 
+        foreach( Config::$appearance["css"] as $csschunk ){                          
+            $tmpchunk = array();                                                     
+            $tmpchunk["type"] = "css";                                               
+            $tmpchunk["key"] = $csschunk[0];                                         
+            $tmpchunk["value"] = $csschunk[1];                                       
+                                                                                 
+            $e["data"][]=$tmpchunk;                                                  
+        }                                                                            
+                                                                                 
+        # chunk: project                                                             
+        if(User::$mod){  # only for mods                                             
+            $result = Database::query("SELECT id FROM projects;");                   
+            while ( $row = $result->fetch_assoc() ){                                 
+                $e["data"][] = MuscariEvent::genSysChunk("project", $row["id"]);     
+            }                                                                        
+        }                                                                            
+                                                                                 
+        # chunk: user                                                                
+        $e["data"][] = MuscariEvent::genSysChunk("user");                            
+                                                                                 
+        return $e;                                                                   
+    }                                                                                
+
 }
 
 #
@@ -322,6 +430,20 @@ class MuscariEvent {
 
 function read($file){
     return file_get_contents(__DIR__ . "/" . $file);
+}
+
+function socket_full_write($SOCKET, $message){
+    $length = strlen($message);
+        
+    while (true) {
+        $sent = socket_write($SOCKET, $message, $length);
+        if ($sent === false) { return false; }
+        if ($sent < $length) {
+            $message = substr($message, $sent);
+            $length -= $sent;
+        }else{ break; }
+    }
+    return true;
 }
 
 ?>
