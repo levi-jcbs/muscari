@@ -3,3 +3,7 @@
 /podman/systemd/*
 
 !.gitkeep
+
+/docker/*
+!/docker/deploy.sh
+!/docker/docker-compose.yaml
