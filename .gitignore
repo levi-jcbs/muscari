@@ -1,4 +1,5 @@
 /application/config/config.json
+/application/sockets/*
 /podman/systemd/*
 
 !.gitkeep

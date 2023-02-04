@@ -48,7 +48,6 @@ CREATE TABLE `stimmen` (
 
 CREATE TABLE `sockets` (
   `id`        int           PRIMARY KEY auto_increment,   /*                                                           */
-  `port`      int                                     ,   /*                                                           */
   `user`      int                                     );  /* user.id                                                   */
 
 CREATE TABLE `timeline` (

@@ -66,8 +66,8 @@ function receive_sys_event(event){
 		document.getElementById("nutzereinstellungen_set_user_name").value=chunk["name"];
 		document.getElementById("frage_stellen_set_user_name").value=chunk["name"];
 	    }
-	    if(exists(chunk["session"])){
-		document.getElementById("data_session").value=chunk["session"];
+	    if(exists(chunk["sessionid"])){
+		document.getElementById("data_session").value=chunk["sessionid"];
 	    }
 	    if(exists(chunk["level"]) && parseInt(chunk["level"]) >= 0 && parseInt(chunk["level"]) <= 3){
 		chunk["level"]=parseInt(chunk["level"]);
