@@ -1,4 +1,6 @@
 /application/config/config.json
+/application/config/mods/*
+!/application/config/mods/example.json
 /application/sockets/*
 /podman/systemd/*
 
