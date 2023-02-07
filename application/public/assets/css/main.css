@@ -253,7 +253,7 @@ body {
     color: var(--var-color-final-accent-text);    
 }
 
-.body .frage .topbar .interessant {
+.body .frage .topbar .clickable {
     cursor: pointer;
 }
 

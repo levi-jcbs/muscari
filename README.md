@@ -113,6 +113,82 @@ To deploy Muscari manually, you need to fulfill the following requirements:
    - Database: **muscari**
 5. The application has access to the MySQL Server by configuring the SQL server hostname/IP and port correctly. This can be changed in `/muscari/application/config/mysql/default.json`
 
+## API
+
+### Event Stream (Server -> Client)
+
+The server can send JSON Messages, called "events" to the client. In muscari there are two types of events: **sys**-events for basic system level information such as appearance, user or project and **content**-events for all fast changing content, such as questions and comments. To transfer several information in one single event, the information is splitted in blocks, called "chunks". Each chunks is an information block containing question, user, etc. data.
+
+#### Event Structure
+
+```json
+{
+    "event": "sys/content",
+    "data": [
+        [
+            "type": "chunk-type",
+            "chunkdata-key": "chunkdata-value"
+        ],
+        [
+            "type": "chunk-type",
+            "chunkdata-key": "chunkdata-value"
+        ]
+    ]
+}
+```
+
+#### Sys chunks
+
+```json
+[
+    "type": "text",
+    "host": "",
+    "headline": ""
+],
+[
+    "type": "css",
+    "key": "--var-xyz",
+    "value": ""
+],
+[
+    "type": "project",
+    "id": 0,
+    "name": "",
+    "active": 0,
+    "remove": 0
+],
+[
+    "type": "user",
+    "name": "",
+    "sessionid": "",
+    "level": "",
+    "os": "",
+    "mod": 0,
+    "unset": 0
+]
+```
+
+#### Data chunks
+
+```json
+[
+    "type": "frage",
+    "id": 0,
+    "username": "",
+    "level": "",
+    "os": "",
+    "forum": 0,
+    "inhalt": "",
+    "status": 0,
+    "removable": 0,
+    "remove": 0
+]
+```
+
+### Request API (Client -> Server)
+
+
+
 ## License
 
 This project is licensed under the **GNU General Public License v3.0**.

@@ -72,8 +72,23 @@ case "sys:set-project(active)":  # TODO: Still possible to set non-existend proj
     
     MuscariAPI::setSuccess();
     break;
+    
 
+    ### MIXED REQUESTS
 
+case "content:remove-frage":
+    $frage_owner=Database::getFirstValue("SELECT user FROM fragen WHERE id='".Database::escape($REQ["id"])."';");
+    
+    if(!User::$mod and User::$id != $frage_owner){ MuscariAPI::setError("not_a_mod_or_owner"); break; }
+    $CONTENT_EVENT_TARGET = -1;
+    
+    Database::query("DELETE FROM fragen WHERE id='".Database::escape($REQ["id"])."';");
+    $CONTENT_EVENT["data"][] = MuscariEvent::genContentChunk("frage", $REQ["id"]);
+    
+    MuscariAPI::setSuccess();
+    break;
+
+    
     ### USER REQUESTS
 
     # SYS: SET - USER (SESSION)

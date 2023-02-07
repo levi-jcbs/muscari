@@ -359,7 +359,7 @@ class MuscariEvent {
         case "frage":
             if(!is_numeric($id)){ return false; }
             $exists = false;
-            $result = Database::query("SELECT fragen.id, user.name, user.level, user.os, fragen.forum, fragen.status, fragen.inhalt FROM fragen, user WHERE fragen.user=user.id and fragen.id='".Database::escape( $id )."';");
+            $result = Database::query("SELECT fragen.id, user.name, user.level, user.os, fragen.forum, fragen.status, fragen.inhalt, user.id AS userid FROM fragen, user WHERE fragen.user=user.id and fragen.id='".Database::escape( $id )."';");
             while($row = $result->fetch_assoc()){
                 $exists = true;
                 $chunk["id"] = $row["id"];
@@ -369,6 +369,12 @@ class MuscariEvent {
                 $chunk["forum"] = $row["forum"];
                 $chunk["inhalt"] = $row["inhalt"];
                 $chunk["status"] = $row["status"];
+
+                if(User::$mod or User::$id == $row["userid"]){
+                    $chunk["removable"]=1;
+                }else{
+                    $chunk["removable"]=0;
+                }
             }
             if(!$exists){
                 $chunk["id"] = $id;

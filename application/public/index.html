@@ -108,7 +108,8 @@
 	
 	<div>
 	  <div class="inputtitle">Deine Frage:</div>
-	  <input type="text" id="frage_stellen_new_frage">
+	  <input type="text" id="frage_stellen_new_frage" maxlength="300">
+	  <p class="little">(Maximal 300 Zeichen)</p>
 	</div>
 	
 	<div><div class="button important" onclick="api_request(['frage_stellen_set_user_name', 'frage_stellen_set_user_level', 'frage_stellen_set_user_os', 'frage_stellen_new_frage']);">Frage stellen</div></div>

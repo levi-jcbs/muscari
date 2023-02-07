@@ -133,23 +133,32 @@ function receive_content_event(event){
     var data = JSON.parse(event.data).data;
     
     data.forEach(function(chunk){
-	if(chunk["type"] == "frage"){
-	    chunk["id"]=parseInt(chunk["id"]);
-	    if(exists(chunk["id"]) && !Number.isNaN(chunk["id"]) && !document.getElementById("frage_"+chunk["id"])){
-		let frage_html = `
-<input type="checkbox" class="pseudo" id="togglefrage_${chunk["id"]}">
-<label class="frage" id="frage_${chunk["id"]}" for="togglefrage_${chunk["id"]}">
-  <div class="topbar" id="frage_${chunk["id"]}_topbar">
-    <div class="user" id="frage_${chunk["id"]}_topbar_username">${chunk["username"]}</div>
-    <div class="tag" id="frage_${chunk["id"]}_topbar_level">${level2string(chunk["level"])}</div>
-    <div class="tag" id="frage_${chunk["id"]}_topbar_os">${chunk["os"]}</div>
-    <div class="space"></div>
-    <div class="interessant" id="frage_${chunk["id"]}_topbar_interessant" class="_mod">löschen</div>
-  </div>
-  <div class="inhalt" id="frage_${chunk["id"]}_inhalt">${chunk["inhalt"]}</div>
-</label>
-`;
+	chunk["id"]=parseInt(chunk["id"]);
+	if(chunk["type"] == "frage" && !Number.isNaN(chunk["id"])){
+	    /* Build question */
+	    if(!document.getElementById("frage_"+chunk["id"])){
+		let frage_html = "";
+		frage_html+=`<input type="checkbox" class="pseudo" id="togglefrage_${chunk["id"]}">`;
+		frage_html+=`<label class="frage" id="frage_${chunk["id"]}" for="togglefrage_${chunk["id"]}">`;
+		  frage_html+=`<div class="topbar" id="frage_${chunk["id"]}_topbar">`;
+		    frage_html+=`<div class="user" id="frage_${chunk["id"]}_topbar_username">${chunk["username"]}</div>`;
+		    frage_html+=`<div class="tag" id="frage_${chunk["id"]}_topbar_level">${level2string(chunk["level"])}</div>`;
+		    frage_html+=`<div class="tag" id="frage_${chunk["id"]}_topbar_os">${chunk["os"]}</div>`;
+		    frage_html+=`<div class="space"></div>`;
+		if(exists(chunk["removable"]) && chunk["removable"] == 1){
+		    frage_html+=`<div class="clickable" id="frage_${chunk["id"]}_topbar_remove" onclick="new_api_request('content', 'remove', 'frage', '', '`+chunk["id"]+`', '')">löschen</div>`;
+		}
+		  frage_html+=`</div>`;
+		  frage_html+=`<div class="inhalt" id="frage_${chunk["id"]}_inhalt">${chunk["inhalt"]}</div>`;
+		frage_html+=`</label>`;
+		
 		document.getElementById("fragen").innerHTML+=frage_html;
+	    }
+
+	    /* Remove question */
+	    if(document.getElementById("frage_"+chunk["id"]) && exists(chunk["remove"]) && chunk["remove"] == 1){
+		document.getElementById("togglefrage_"+chunk["id"]).remove();		
+		document.getElementById("frage_"+chunk["id"]).remove();		
 	    }
 	}
     });
@@ -173,6 +182,10 @@ function check_cookie_policy(){
 	return "0";
     }
     return "1";
+}
+
+function new_api_request(group, action, type, property, id, content){
+    fetch('/api/?group='+group+'&action='+action+'&type='+type+'&property='+property+'&id='+encodeURIComponent(id)+'&content='+encodeURIComponent(content));
 }
 
 function api_request(component){
@@ -235,10 +248,12 @@ function api_request(component){
 	var frage = document.getElementById("frage_stellen_new_frage");
 	fetch( '/api/?group=content&action=new&type=frage&content='+encodeURIComponent(frage.value) );
 	frage.value="";
-	document.getElementById("area_frage").innerHTML+=`Vielen Dank, dass du eine Frage gestellt hast! Sie erscheint nun auf der Hauptseite.`;
+	if(!document.getElementById("tmp_danke")){
+	    document.getElementById("area_frage").innerHTML+=`<div id='tmp_danke'>Vielen Dank, dass du eine Frage gestellt hast! Sie erscheint nun auf der Hauptseite.</div>`;
+	}
     }
 }
-
+    
 function removeLastWordIf(check, string) {
     if(string.endsWith(check)){
 	return string.slice(0, check.length*-1);
