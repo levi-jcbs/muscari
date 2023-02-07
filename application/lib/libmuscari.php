@@ -56,6 +56,7 @@ class Config {
     public static $database;
     public static $application;
     public static $appearance;
+    public static $mods;
     
     static function init(){
         # Get general config
@@ -73,6 +74,13 @@ class Config {
         Config::$database=json_decode(read("../config/database/".$general["database"].".json"), true);
         Config::$application=json_decode(read("../config/application/".$general["application"].".json"), true);
         Config::$appearance=json_decode(read("../config/appearance/".$general["appearance"].".json"), true);
+
+        $modarray=array();
+        $modconfig=json_decode(read("../config/mods/".$general["mods"].".json"), true);
+        foreach($modconfig["mods"] AS $modconfig_row){
+            $modarray[]=$modconfig_row[1];
+        }
+        Config::$mods=$modarray;
     }
 }
 
@@ -157,7 +165,7 @@ class User {
                 User::$os=$row["os"];
                 User::$level=$row["level"];
 
-                if( in_array($sessionid, Config::$application["mods"]) ){  # Check if user is mod
+                if( in_array($sessionid, Config::$mods) ){  # Check if user is mod
                     User::$mod=true;
                 }else{
                     User::$mod=false;
@@ -264,7 +272,7 @@ class MuscariSocket {
             $user_specification="WHERE user='".Database::escape($user)."'";
         }elseif($user == -2){
             $user_specification="WHERE 0=1";
-            foreach(Config::$application["mods"] AS $mod_sessionid){
+            foreach(Config::$mods AS $mod_sessionid){
                 $result = Database::query("SELECT id FROM user WHERE session='".Database::escape($mod_sessionid)."';");
                 while ($row = $result->fetch_assoc()) {
                     $mod_userid=$row["id"];
@@ -382,7 +390,7 @@ class MuscariEvent {
         $e["event"] = "content";                                                         
 
         # chunk: frage
-        $result = Database::query("SELECT id FROM fragen ORDER BY id;");                   
+        $result = Database::query("SELECT id FROM fragen WHERE project=".Database::escape( Project::$id )." ORDER BY id;");                   
         while ( $row = $result->fetch_assoc() ){                                 
             $e["data"][] = MuscariEvent::genContentChunk("frage", $row["id"]);     
         }                                                                        
