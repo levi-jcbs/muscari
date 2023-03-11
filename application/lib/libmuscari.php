@@ -336,6 +336,7 @@ class MuscariEvent {
             if(User::$available){                                  
                 $chunk["name"] = User::$name;          
                 $chunk["sessionid"] = User::$sessionid;
+                $chunk["id"] = User::$id;
                 $chunk["level"] = User::$level;        
                 $chunk["os"] = User::$os;              
                 $chunk["mod"] = User::$mod;            
@@ -369,12 +370,7 @@ class MuscariEvent {
                 $chunk["forum"] = $row["forum"];
                 $chunk["inhalt"] = $row["inhalt"];
                 $chunk["status"] = $row["status"];
-
-                if(User::$mod or User::$id == $row["userid"]){
-                    $chunk["removable"]=1;
-                }else{
-                    $chunk["removable"]=0;
-                }
+                $chunk["userid"] = $row["userid"];                    
             }
             if(!$exists){
                 $chunk["id"] = $id;

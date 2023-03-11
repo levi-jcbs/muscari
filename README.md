@@ -161,6 +161,7 @@ The server can send JSON Messages, called "events" to the client. In muscari the
     "type": "user",
     "name": "",
     "sessionid": "",
+    "id": 0,
     "level": "",
     "os": "",
     "mod": 0,
@@ -180,14 +181,25 @@ The server can send JSON Messages, called "events" to the client. In muscari the
     "forum": 0,
     "inhalt": "",
     "status": 0,
-    "removable": 0,
+    "userid": 0,
     "remove": 0
 ]
 ```
 
 ### Request API (Client -> Server)
 
+#### Status Return
 
+```json
+[
+    [
+        "component": "",
+        "status": "success|notice|error",
+        "description": ""
+    ],
+    ...
+]
+```
 
 ## License
 

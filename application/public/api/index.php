@@ -28,9 +28,9 @@ if($REQ["property"] != ""){
 }
 
 $SYS_EVENT = array( "event" => "sys", "data" => [] );
-$SYS_EVENT_TARGET = -3;  # 0+ User; -1 All users; -2 Mods; -3 Self
+$SYS_EVENT_TARGET = -3;  # 0+ User; -1 All users; -2 Mods; -3 Self [Default: Self]
 $CONTENT_EVENT = array( "event" => "content", "data" => [] );
-$CONTENT_EVENT_TARGET = -1;  # ...
+$CONTENT_EVENT_TARGET = -1;  # ... [Default: All users]
 
 if(!User::$available){
     die("Error: not a valid user");  # besser machen

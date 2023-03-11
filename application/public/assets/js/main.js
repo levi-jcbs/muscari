@@ -8,6 +8,13 @@ window.onload = function(){
     dataEventSource.addEventListener("content", (event) => {receive_content_event(event);});
 }
 
+class sessionData {
+    static user_id = -1;
+    static user_sessionid = -1;
+    static user_mod = 0;
+    static system_cookie_policy = 0;
+}
+
 function receive_error_event(event){
     alert(event.data);
 }
@@ -28,7 +35,7 @@ function receive_sys_event(event){
 	if(chunk["type"] == "css"){
 	    document.documentElement.style.setProperty(chunk["key"], chunk["value"]);
 	}
-
+	
 	if(chunk["type"] == "project"){
 	    if(exists(chunk["id"]) && exists(chunk["name"])){
 		if(!document.getElementById("einstellungen_set_active_project_option_"+chunk["id"])){
@@ -67,7 +74,11 @@ function receive_sys_event(event){
 		document.getElementById("frage_stellen_set_user_name").value=chunk["name"];
 	    }
 	    if(exists(chunk["sessionid"])){
+		sessionData.user_sessionid = chunk["sessionid"];
 		document.getElementById("data_session").value=chunk["sessionid"];
+	    }
+	    if(exists(chunk["id"]) && parseInt(chunk["id"]) >= 0){
+		sessionData.user_id = chunk["id"];
 	    }
 	    if(exists(chunk["level"]) && parseInt(chunk["level"]) >= 0 && parseInt(chunk["level"]) <= 3){
 		chunk["level"]=parseInt(chunk["level"]);
@@ -113,12 +124,14 @@ function receive_sys_event(event){
 		document.getElementById("data_mod_1").selected=false;
 
 		if(chunk["mod"] == 0){
+		    sessionData.mod = chunk["mod"];
 		    document.getElementById("data_mod").innerText="User";
 		    document.getElementById("data_mod_0").selected=true;
 		    
 		    document.querySelectorAll('._mod').forEach(e => e.remove());
 		}
 		if(chunk["mod"] == 1){
+		    sessionData.mod = chunk["mod"];
 		    document.getElementById("data_mod").innerText="Moderator";
 		    document.getElementById("data_mod_1").selected=true;
 
@@ -145,7 +158,7 @@ function receive_content_event(event){
 		    frage_html+=`<div class="tag" id="frage_${chunk["id"]}_topbar_level">${level2string(chunk["level"])}</div>`;
 		    frage_html+=`<div class="tag" id="frage_${chunk["id"]}_topbar_os">${chunk["os"]}</div>`;
 		    frage_html+=`<div class="space"></div>`;
-		if(exists(chunk["removable"]) && chunk["removable"] == 1){
+		if( ( exists(chunk["userid"]) && chunk["userid"] == sessionData.user_id ) || sessionData.mod == 1 ){
 		    frage_html+=`<div class="clickable" id="frage_${chunk["id"]}_topbar_remove" onclick="new_api_request('content', 'remove', 'frage', '', '`+chunk["id"]+`', '')">löschen</div>`;
 		}
 		  frage_html+=`</div>`;
