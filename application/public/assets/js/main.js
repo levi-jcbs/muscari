@@ -20,6 +20,7 @@ function receive_error_event(event){
 }
 
 function receive_sys_event(event){
+	console.log(event.data);
     var data = JSON.parse(event.data).data;
     
     data.forEach(function(chunk){
@@ -55,6 +56,7 @@ function receive_sys_event(event){
 		if(chunk["active"] == 1){
 		    selectOption.selected=true;
 		    selectOption.innerText+=" (aktiv)";
+			document.getElementById("project_timelimit").innerText=chunk["timelimit"];
 		}
 		if(chunk["active"] == 0){
 		    selectOption.selected=false;
