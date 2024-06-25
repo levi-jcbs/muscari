@@ -1,7 +1,8 @@
 CREATE TABLE `projects` (
   `id`        int           PRIMARY KEY auto_increment,   /*                                                           */
   `name`      varchar(30)                             ,   /*                                                           */
-  `active`    int           DEFAULT 0                 );  /* 0: Nein, 1: Ja                                            */
+  `active`    int           DEFAULT 0                 ,   /* 0: Nein, 1: Ja                                            */
+  `timelimit` varchar(5)                              );  /* Example: "23:59"                                          */
 
 CREATE TABLE `user` (
   `id`        int           PRIMARY KEY auto_increment,   /*                                                           */
