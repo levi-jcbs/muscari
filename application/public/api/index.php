@@ -49,8 +49,11 @@ case "sys:new-project":
     $SYS_EVENT_TARGET = -2;
     
     $old_active_id = Database::getFirstValue("SELECT id FROM projects WHERE active=1;");
+    # $REQ["content"] = PROJECTNAME°23:59
+    $project_name = explode("°", $REQ["content"])[0];
+    $project_time = explode("°", $REQ["content"])[1];
     Database::query("UPDATE projects SET active=0;");
-    Database::query("INSERT INTO projects SET name='".Database::escape( $REQ["content"] )."', active=1;");
+    Database::query("INSERT INTO projects SET name='".Database::escape( $project_name )."', active=1, time='".Database::escape( $project_time )."';");
     $new_active_id = Database::getFirstValue("SELECT LAST_INSERT_ID();");
     
     $SYS_EVENT["data"][] = MuscariEvent::genSysChunk("project", $old_active_id);

@@ -212,9 +212,11 @@ function api_request(component){
 
     if(component.includes("einstellungen_new_project")){
 	let project_name = document.getElementById("einstellungen_new_project").value;
+	let timelimit = document.getElementById("einstellungen_timelimit").value;
 	if(project_name != ""){
-	    fetch( '/api/?group=sys&action=new&type=project&content='+encodeURIComponent(project_name) );
+	    fetch( '/api/?group=sys&action=new&type=project&content='+encodeURIComponent(project_name+"°"+timelimit));
 	    document.getElementById("einstellungen_new_project").value="";
+		document.getElementById("einstellungen_timelimit").value="";
 	}
     }
 

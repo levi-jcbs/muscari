@@ -112,10 +112,15 @@
 	  <p class="little">(Maximal 300 Zeichen)</p>
 	</div>
 	
-	<div><div class="button important" onclick="api_request(['frage_stellen_set_user_name', 'frage_stellen_set_user_level', 'frage_stellen_set_user_os', 'frage_stellen_new_frage']);">Frage stellen</div></div>
-      </div>
-    </div>
-    
+	<div>
+		<div class="little">
+			Zeitlimit:  <span id="project_timelimit"></span> Uhr
+		</div>
+
+		<div class="button important" onclick="api_request(['frage_stellen_set_user_name', 'frage_stellen_set_user_level', 'frage_stellen_set_user_os', 'frage_stellen_new_frage']);">Frage stellen</div>
+
+	</div>
+	  	
     <div class="body site_nutzereinstellungen">
       <div>
 	<div class="titlecontainer">
@@ -207,11 +212,15 @@
 	    <div class="inputtitle">Neues Projekt:</div>
 	    <input type="text" placeholder="Name" id="einstellungen_new_project">
 	  </div>
+	  <div>
+	    <div class="inputtitle">Zeitlimit:</div>
+	    <input type="text" placeholder="23:59" id="einstellungen_timelimit">
+	  </div>
 	</div>
 
 	<div class="p">Neue Projekte werden sofort auf aktiv gestellt.</div>
 	
-	<div><div class="button important" onclick="api_request(['einstellungen_new_project', 'einstellungen_set_active_project']);">speichern</div></div>
+	<div><div class="button important" onclick="api_request(['einstellungen_timelimit', 'einstellungen_new_project', 'einstellungen_set_active_project']);">speichern</div></div>
 
       </div>
     </div>

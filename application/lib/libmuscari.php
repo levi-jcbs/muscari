@@ -209,7 +209,7 @@ class Project {
             }
 
             if(!$project_exists and $attempts == 0){  # Only create project if not already tried.
-                Database::query("INSERT INTO projects SET name='First project', active='1';");
+                Database::query("INSERT INTO projects SET name='First project', active='1', timelimit='23:59';");
             }
             
             $attempts++;
@@ -318,13 +318,20 @@ class MuscariEvent {
 
         case "project":
             if(!is_numeric($id)){ return false; }
+            // file_put_contents("/tmp/my_error.log", "HELLO WORLD!", FILE_APPEND);
+            write(STDERR, "HELLO WORLD!");
             $exists = false;
-            $result = Database::query("SELECT id, name, active FROM projects WHERE id='". Database::escape($id) ."';");
+            $result = Database::query("SELECT id, name, active, timelimit FROM projects WHERE id='". Database::escape($id) ."';");
             while($row = $result->fetch_assoc()){
+                // file_put_contents("/tmp/my_error.log", serialize($row)."\n", FILE_APPEND);
+                // file_put_contents("/tmp/my_error.log", serialize($chunk)."\n", FILE_APPEND);
+                write(STDERR, serialize($row)."\n");
+                write(STDERR, serialize($chunk)."\n");
                 $exists = true;
                 $chunk["id"]=$row["id"];
                 $chunk["name"]=$row["name"];
                 $chunk["active"]=$row["active"];
+                // $chunk["timelimit"]=$row["timelimit"];
             }
             if(!$exists){
                 $chunk["id"] = $id;
