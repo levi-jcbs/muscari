@@ -468,14 +468,16 @@ class MuscariEvent
 			$e["data"][] = $tmpchunk;
 		}
 
-		# chunk: project                                                             
-		if (User::$mod) {  # only for mods                                             
-			$result = Database::query("SELECT id FROM projects;");
-			while ($row = $result->fetch_assoc()) {
-				$e["data"][] = MuscariEvent::genSysChunk("project", $row["id"]);
-			}
-		}
-
+		# chunk: project    
+        if (User::$mod) {  # only for mods
+            $result = Database::query("SELECT id, active FROM projects;");
+        } else {
+            $result = Database::query("SELECT id, active FROM projects WHERE active = 1;");
+        }                                                         
+        while ($row = $result->fetch_assoc()) {
+            $e["data"][] = MuscariEvent::genSysChunk("project", $row["id"]);
+        }
+        
 		# chunk: user                                                                
 		$e["data"][] = MuscariEvent::genSysChunk("user");
 

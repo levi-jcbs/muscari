@@ -145,6 +145,14 @@ case "sys:set-user(os)":
 
     # CONTENT: NEW - FRAGE
 case "content:new-frage":
+    # Check if the current time is lower than the project time
+    # project_time is in this format: "23:59"
+    $project_time = Database::getFirstValue("SELECT timelimit FROM projects WHERE active=1;");
+    $project_time = explode(":", $project_time);
+    $project_time = $project_time[0]*60 + $project_time[1];
+    $current_time = date("H")*60 + date("i");
+    if($current_time > $project_time){ MuscariAPI::setError("project_time_over"); break; }
+
     if(!($REQ["content"] != "")){ MuscariAPI::setError("content_missing"); break; }
 
     Database::query("INSERT INTO fragen SET user='".Database::escape( User::$id )."', project='".Database::escape( Project::$id )."', time='".Database::escape( time() )."', inhalt='".Database::escape( $REQ["content"] )."';");
