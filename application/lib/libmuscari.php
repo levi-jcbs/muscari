@@ -241,7 +241,7 @@ class Project
 			}
 
 			if (!$project_exists and $attempts == 0) {  # Only create project if not already tried.
-				Database::query("INSERT INTO projects SET name='First project', active='1', timelimit='23:59';");
+				Database::query("INSERT INTO projects SET name='First project', active='1', timelimit='21:00';");
 			}
 
 			$attempts++;
