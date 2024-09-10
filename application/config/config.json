@@ -2,5 +2,5 @@
   "database": "default",
   "application": "linux-guides",
   "appearance": "linux-guides",
-  "mods": ""
+  "mods": "mods"
 }

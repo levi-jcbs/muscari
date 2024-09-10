@@ -8,6 +8,21 @@ Web Application for live Q&A Sessions with community.
 
 This is a object oriented rewrite of "levi-jcbs/LiveQA" in very early development.
 
+## How to deploy (docker)
+
+```bash
+docker-compose up -d
+```
+
+- The webapp listens via http on port `10924`
+
+### To get moderator
+
+- Go to the webapp -> user -> copy the user id
+- `cp application/config/mods/example.json application/config/mods/mods.json`
+- `vim application/config/mods/mods.json`
+- Adjust the entries in the mods.json file that your user id is defined
+
 ## Build Container Images
 
 ### Description

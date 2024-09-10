@@ -1,8 +1,8 @@
 {
   "server": "mysql",
-  "host": "127.0.0.1",
+  "host": "mariadb",
   "port": 3306,
   "database": "muscari",
   "user": "muscari",
-  "password": "muscari"
+  "password": "Zawag3eepheid1eech4H"
 }

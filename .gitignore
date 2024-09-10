@@ -1,4 +1,3 @@
-/application/config/config.json
 /application/config/mods/*
 !/application/config/mods/example.json
 /application/sockets/*
@@ -9,3 +8,5 @@
 /docker/*
 !/docker/deploy.sh
 !/docker/docker-compose.yaml
+
+/db_data/
